@@ -41,10 +41,6 @@ struct Point2D
     double x, y;
 };
 
-flann::Matrix<double> pointsToMatrix(const std::vector<Point3D> &points);
-
-flann::Matrix<double> pointsToMatrix(const std::vector<Point2D> &points);
-
 template <typename T> void printMatrix(const flann::Matrix<T> &matrix)
 {
     const size_t &rows = matrix.rows;
@@ -59,27 +55,11 @@ template <typename T> void printMatrix(const flann::Matrix<T> &matrix)
     }
 }
 
-class KdTreeFLANN
+template <typename T> class KdTreeFLANN
 {
   public:
-    KdTreeFLANN(const std::vector<Point3D> &points);
+    KdTreeFLANN(const std::vector<T> &points);
     ~KdTreeFLANN();
-
-    std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
-    knnSearch(const std::vector<Point3D> &query, const size_t &knn);
-
-    std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
-    radiusSearch(const std::vector<Point3D> &query, const float &radius);
-
-  private:
-    std::unique_ptr<flann::Index<flann::L2<double>>> _index;
-};
-
-template <typename T> class KdTreeTest
-{
-  public:
-    KdTreeTest(const std::vector<T> &points);
-    ~KdTreeTest();
 
     std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
     knnSearch(const std::vector<T> &query, const size_t &knn);
@@ -88,6 +68,9 @@ template <typename T> class KdTreeTest
     radiusSearch(const std::vector<T> &query, const float &radius);
 
   private:
+    flann::Matrix<double> pointsToMatrix(const std::vector<Point3D> &points);
+    flann::Matrix<double> pointsToMatrix(const std::vector<Point2D> &points);
+
     std::unique_ptr<flann::Index<flann::L2<double>>> _index;
 };
 

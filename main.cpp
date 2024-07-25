@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         std::vector<Point3D> points = {Point3D(1.0, 2.0, 3.0), Point3D(4.0, 5.0, 6.0),
                                        Point3D(7.0, 8.0, 9.0), Point3D(10.0, 11.0, 12.0)};
         std::vector<Point3D> query = {Point3D(1.0, 2.0, 3.0), Point3D(10.0, 11.0, 12.0)};
-        KdTreeFLANN kdTree(points);
+        KdTreeFLANN<Point3D> kdTree(points);
         const auto searchResult = kdTree.knnSearch(query, nn);
         const std::vector<std::vector<size_t>> &indices = searchResult.first;
         const std::vector<std::vector<double>> &dists = searchResult.second;
