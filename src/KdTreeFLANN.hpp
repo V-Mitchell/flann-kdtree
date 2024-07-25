@@ -61,6 +61,8 @@ template <typename T> class KdTreeFLANN
     KdTreeFLANN(const std::vector<T> &points);
     ~KdTreeFLANN();
 
+    size_t size();
+
     std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
     knnSearch(const std::vector<T> &query, const size_t &knn);
 

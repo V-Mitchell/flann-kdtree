@@ -12,6 +12,8 @@ template <typename T> KdTreeFLANN<T>::KdTreeFLANN(const std::vector<T> &points)
 
 template <typename T> KdTreeFLANN<T>::~KdTreeFLANN() { _index.reset(); }
 
+template <typename T> size_t KdTreeFLANN<T>::size() { return _index->size(); }
+
 template <typename T>
 std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
 KdTreeFLANN<T>::knnSearch(const std::vector<T> &query, const size_t &knn)
