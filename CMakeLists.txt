@@ -22,8 +22,8 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -O3 -Wall")
 
 add_executable(
 	${PROJECT_NAME}
-        main.cpp
-	KdTreeFLANN.cpp
+        src/main.cpp
+	src/KdTreeFLANN.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} flann ${LZ4_LIBRARIES})
