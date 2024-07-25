@@ -14,6 +14,39 @@ template <typename T> KdTreeFLANN<T>::~KdTreeFLANN() { _index.reset(); }
 
 template <typename T> size_t KdTreeFLANN<T>::size() { return _index->size(); }
 
+template <typename T> void KdTreeFLANN<T>::addPoints(const std::vector<T> &points)
+{
+    _index->addPoints(pointsToMatrix(points));
+}
+
+template <typename T> void KdTreeFLANN<T>::removePoints(const std::vector<size_t> &indices)
+{
+    for (const auto &idx : indices)
+    {
+        _index->removePoint(idx);
+    }
+}
+
+template <typename T> std::vector<T> KdTreeFLANN<T>::getPoints()
+{
+    std::vector<T> points;
+    for (size_t i = 0; i < _index->size(); ++i)
+    {
+        emplaceBackPointData(_index->getPoint(i), points);
+    }
+    return points;
+}
+
+template <typename T> std::vector<T> KdTreeFLANN<T>::getPoints(const std::vector<size_t> &indices)
+{
+    std::vector<T> points;
+    for (const auto &idx : indices)
+    {
+        emplaceBackPointData(_index->getPoint(idx), points);
+    }
+    return points;
+}
+
 template <typename T>
 std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
 KdTreeFLANN<T>::knnSearch(const std::vector<T> &query, const size_t &knn)

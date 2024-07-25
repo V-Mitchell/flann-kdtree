@@ -61,6 +61,14 @@ template <typename T> class KdTreeFLANN
     KdTreeFLANN(const std::vector<T> &points);
     ~KdTreeFLANN();
 
+    void addPoints(const std::vector<T> &points);
+
+    void removePoints(const std::vector<size_t> &indices);
+
+    std::vector<T> getPoints();
+
+    std::vector<T> getPoints(const std::vector<size_t> &indices);
+
     size_t size();
 
     std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<double>>>
@@ -72,6 +80,15 @@ template <typename T> class KdTreeFLANN
   private:
     flann::Matrix<double> pointsToMatrix(const std::vector<Point3D> &points);
     flann::Matrix<double> pointsToMatrix(const std::vector<Point2D> &points);
+
+    inline void emplaceBackPointData(double *dataPtr, std::vector<Point3D> &points)
+    {
+        points.emplace_back(*dataPtr, *(dataPtr + 1), *(dataPtr + 2));
+    }
+    inline void emplaceBackPointData(double *dataPtr, std::vector<Point2D> &points)
+    {
+        points.emplace_back(*dataPtr, *(dataPtr + 1));
+    }
 
     std::unique_ptr<flann::Index<flann::L2<double>>> _index;
 };
