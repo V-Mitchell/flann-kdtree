@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.6.3 FATAL_ERROR)
 
 project(flann-kdtree)
 
+option(ENABLE_UNIT_TEST "Enable Unit Testing" ON)
+
 find_package(flann REQUIRED)
 find_library(LZ4_LIBRARIES NAMES liblz4.so HINTS "lz4/lib")
 
@@ -27,3 +29,7 @@ add_executable(
 )
 
 target_link_libraries(${PROJECT_NAME} flann ${LZ4_LIBRARIES})
+
+if(ENABLE_UNIT_TEST)
+	add_subdirectory(test)
+endif()
