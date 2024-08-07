@@ -1,11 +1,14 @@
 #include "KdTreeFLANN.hpp"
 
-template <typename T> KdTreeFLANN<T>::KdTreeFLANN(const std::vector<T> &points)
+template <typename T>
+KdTreeFLANN<T>::KdTreeFLANN(const std::vector<T> &points, const FLANNConfig &config)
 {
     static_assert(std::is_same<Point2D, T>::value || std::is_same<Point3D, T>::value,
                   "T must be either Point2D or Point3D");
 
-    flann::Index<flann::L2<double>> index(pointsToMatrix(points), flann::KDTreeIndexParams(4));
+    _config = config;
+    flann::Index<flann::L2<double>> index(pointsToMatrix(points),
+                                          flann::KDTreeIndexParams(_config.numTrees));
     _index = std::make_unique<flann::Index<flann::L2<double>>>(index);
     _index->buildIndex();
 }
@@ -53,7 +56,8 @@ KdTreeFLANN<T>::knnSearch(const std::vector<T> &query, const size_t &knn)
 {
     std::vector<std::vector<size_t>> indices;
     std::vector<std::vector<double>> dists;
-    _index->knnSearch(pointsToMatrix(query), indices, dists, knn, flann::SearchParams(128));
+    _index->knnSearch(pointsToMatrix(query), indices, dists, knn,
+                      flann::SearchParams(_config.numSearchChecks));
     return std::make_pair(indices, dists);
 }
 
@@ -63,7 +67,8 @@ KdTreeFLANN<T>::radiusSearch(const std::vector<T> &query, const float &radius)
 {
     std::vector<std::vector<size_t>> indices;
     std::vector<std::vector<double>> dists;
-    _index->radiusSearch(pointsToMatrix(query), indices, dists, radius, flann::SearchParams(128));
+    _index->radiusSearch(pointsToMatrix(query), indices, dists, radius,
+                         flann::SearchParams(_config.numSearchChecks));
     return std::make_pair(indices, dists);
 }
 

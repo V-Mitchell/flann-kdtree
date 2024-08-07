@@ -58,7 +58,25 @@ template <typename T> void printMatrix(const flann::Matrix<T> &matrix)
 template <typename T> class KdTreeFLANN
 {
   public:
-    KdTreeFLANN(const std::vector<T> &points);
+    struct FLANNConfig
+    {
+        FLANNConfig()
+            : numTrees(4)
+            , numSearchChecks(128)
+        {
+        }
+
+        FLANNConfig(const int &numTrees, const int &numSearchChecks)
+            : numTrees(numTrees)
+            , numSearchChecks(numSearchChecks)
+        {
+        }
+
+        int numTrees;
+        int numSearchChecks;
+    };
+
+    KdTreeFLANN(const std::vector<T> &points, const FLANNConfig &config = FLANNConfig());
     ~KdTreeFLANN();
 
     void addPoints(const std::vector<T> &points);
@@ -90,6 +108,7 @@ template <typename T> class KdTreeFLANN
         points.emplace_back(*dataPtr, *(dataPtr + 1));
     }
 
+    FLANNConfig _config;
     std::unique_ptr<flann::Index<flann::L2<double>>> _index;
 };
 
